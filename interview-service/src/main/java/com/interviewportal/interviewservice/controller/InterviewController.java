@@ -27,10 +27,11 @@ public class InterviewController {
 
     @PostMapping("/generate")
     public ResponseEntity<InterviewResponse> generateQuestions(
+            @RequestHeader("X-User-Id") Long userId,
             @Valid @RequestBody InterviewRequest request) {
 
         return new ResponseEntity<>(
-                interviewService.generateQuestions(request),
+                interviewService.generateQuestions(userId, request),
                 HttpStatus.CREATED);
     }
 
@@ -43,10 +44,11 @@ public class InterviewController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MyInterviewResponse>> getMyInterviews() {
+    public ResponseEntity<List<MyInterviewResponse>> getMyInterviews(
+            @RequestHeader("X-User-Id") Long userId) {
 
         return ResponseEntity.ok(
-                interviewService.getMyInterviews());
+                interviewService.getMyInterviews(userId));
     }
 
     @GetMapping("/{sessionId}")
@@ -58,9 +60,10 @@ public class InterviewController {
     }
 
     @GetMapping("/dashboard")
-    public ResponseEntity<DashboardResponse> getDashboard() {
+    public ResponseEntity<DashboardResponse> getDashboard(
+            @RequestHeader("X-User-Id") Long userId) {
 
         return ResponseEntity.ok(
-                interviewService.getDashboard());
+                interviewService.getDashboard(userId));
     }
 }

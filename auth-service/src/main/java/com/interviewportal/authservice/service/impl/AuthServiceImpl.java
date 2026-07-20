@@ -49,7 +49,7 @@ public class AuthServiceImpl implements AuthService {
 		if(!passwordEnoder.matches(request.getPassword(),user.getPassword())) {
 			throw new RuntimeException("Invalid Password !!!!");
 		}
-		String token = jwtUtil.generateToken(user.getEmail());
+		String token = jwtUtil.generateToken(user);
 		return new LoginResponse(token);
 	}
 

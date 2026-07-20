@@ -15,7 +15,7 @@ public class AppConfig {
     }
 
     @Bean
-    ObjectMapper objectMapper() {
-        return new ObjectMapper();
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper().findAndRegisterModules();
     }
 }

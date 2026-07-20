@@ -38,10 +38,11 @@ public class InterviewServiceImpl implements InterviewService {
     private final InterviewAnswerRepository answerRepository;
 
     @Override
-    public InterviewResponse generateQuestions(InterviewRequest request) {
+    public InterviewResponse generateQuestions(Long userId,
+            InterviewRequest request) {
 
     	InterviewSession session = InterviewSession.builder()
-    	        .userId(1L)   // Temporary until JWT integration
+    			.userId(userId)
     	        .domain(request.getDomain())
     	        .difficulty(request.getDifficulty())
     	        .createdAt(LocalDateTime.now())
@@ -139,10 +140,10 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
     @Override
-    public List<MyInterviewResponse> getMyInterviews() {
+    public List<MyInterviewResponse> getMyInterviews(Long userId) {
 
         List<InterviewSession> sessions =
-                sessionRepository.findAllByOrderByCreatedAtDesc();
+        		sessionRepository.findByUserIdOrderByCreatedAtDesc(userId);
 
         return sessions.stream()
                 .map(session -> MyInterviewResponse.builder()
@@ -192,11 +193,9 @@ public class InterviewServiceImpl implements InterviewService {
     }
     
     @Override
-    public DashboardResponse getDashboard() {
+    public DashboardResponse getDashboard(Long userId) {
 
-        // Temporary until JWT is integrated
-        Long userId = 1L;
-
+     
         Long totalInterviews = sessionRepository.countByUserId(userId);
 
         Long totalQuestions = questionRepository.countBySessionUserId(userId);

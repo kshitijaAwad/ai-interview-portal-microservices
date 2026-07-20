@@ -12,13 +12,13 @@ import com.interviewportal.interviewservice.dto.SessionDetailsResponse;
 
 public interface InterviewService {
 
-    InterviewResponse generateQuestions(InterviewRequest request);
+	InterviewResponse generateQuestions(Long userId, InterviewRequest request);
 
     EvaluationResponse evaluateAnswer(AnswerRequest request);
 
-    List<MyInterviewResponse> getMyInterviews();
+    List<MyInterviewResponse> getMyInterviews(Long userId);
 
     SessionDetailsResponse getSessionDetails(Long sessionId);
 
-    DashboardResponse getDashboard();
+    DashboardResponse getDashboard(Long userId);
 }

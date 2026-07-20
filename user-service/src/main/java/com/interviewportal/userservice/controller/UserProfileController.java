@@ -17,10 +17,9 @@ public class UserProfileController {
     public UserProfileController(UserProfileService userProfileService) {
         this.userProfileService = userProfileService;
     }
-
-    @PostMapping("/{userId}")
+    @PostMapping
     public ResponseEntity<UserProfileResponse> createProfile(
-            @PathVariable Long userId,
+            @RequestHeader("X-User-Id") Long userId,
             @RequestBody UserProfileRequest request) {
 
         return new ResponseEntity<>(
@@ -28,23 +27,25 @@ public class UserProfileController {
                 HttpStatus.CREATED);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<UserProfileResponse> getProfile(@PathVariable Long userId) {
+    @GetMapping("/me")
+    public ResponseEntity<UserProfileResponse> getProfile(
+            @RequestHeader("X-User-Id") Long userId) {
 
-        return ResponseEntity.ok(userProfileService.getProfileByUserId(userId));
+        return ResponseEntity.ok(
+                userProfileService.getProfileByUserId(userId));
     }
-
-    @PutMapping("/{userId}")
+    
+    @PutMapping
     public ResponseEntity<UserProfileResponse> updateProfile(
-            @PathVariable Long userId,
+    		@RequestHeader("X-User-Id") Long userId,
             @RequestBody UserProfileRequest request) {
 
         return ResponseEntity.ok(
                 userProfileService.updateProfile(userId, request));
     }
 
-    @DeleteMapping("/{userId}")
-    public ResponseEntity<String> deleteProfile(@PathVariable Long userId) {
+    @DeleteMapping
+    public ResponseEntity<String> deleteProfile(@RequestHeader("X-User-Id") Long userId) {
 
         userProfileService.deleteProfile(userId);
         return ResponseEntity.ok("Profile deleted successfully");

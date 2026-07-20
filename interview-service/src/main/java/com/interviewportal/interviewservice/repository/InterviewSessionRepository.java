@@ -9,7 +9,9 @@ public interface InterviewSessionRepository
 
     List<InterviewSession> findByUserId(Long userId);
     
-    List<InterviewSession> findAllByOrderByCreatedAtDesc();
+    List<InterviewSession> findByUserIdOrderByCreatedAtDesc(Long userId);
+    
+//    List<InterviewSession> findAllByOrderByCreatedAtDesc();
 
     Long countByUserId(Long userId);
 }
