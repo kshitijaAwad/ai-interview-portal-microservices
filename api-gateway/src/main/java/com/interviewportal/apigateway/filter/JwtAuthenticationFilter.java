@@ -23,7 +23,8 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
     public Mono<Void> filter(ServerWebExchange exchange,
                              GatewayFilterChain chain) {
 
-        String path = exchange.getRequest().getURI().getPath();
+    	ServerHttpRequest request = exchange.getRequest();
+    	String path = request.getURI().getPath();
 
         // Allow Auth APIs without JWT
         if (path.startsWith("/api/auth")) {
@@ -49,14 +50,14 @@ public class JwtAuthenticationFilter implements GlobalFilter, Ordered {
         String username = jwtUtil.extractEmail(token);
         String role = jwtUtil.extractRole(token);
 
-        ServerHttpRequest request = exchange.getRequest()
+        ServerHttpRequest requests = exchange.getRequest()
                 .mutate()
                 .header("X-User-Id", String.valueOf(userId))
                 .header("X-Username", username)
                 .header("X-Role", role)
                 .build();
 
-        return chain.filter(exchange.mutate().request(request).build());
+        return chain.filter(exchange.mutate().request(requests).build());
     }
 
     @Override
