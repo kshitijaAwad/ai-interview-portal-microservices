@@ -26,11 +26,17 @@ function Register() {
 
             navigate("/");
 
-        } catch (error) {
+       } catch (error) {
 
             console.error(error);
 
-            alert("Registration Failed");
+            if (error.response?.status === 409) {
+                alert("Email already exists");
+            } else if (error.response?.data?.message) {
+                alert(error.response.data.message);
+            } else {
+                alert("Registration Failed");
+            }
         }
     };
 

@@ -8,6 +8,7 @@ import com.interviewportal.authservice.dto.LoginResponse;
 import com.interviewportal.authservice.dto.RegisterRequest;
 import com.interviewportal.authservice.entity.Role;
 import com.interviewportal.authservice.entity.User;
+import com.interviewportal.authservice.exception.EmailAlreadyExistsException;
 import com.interviewportal.authservice.repository.UserRepository;
 import com.interviewportal.authservice.security.JwtUtil;
 import com.interviewportal.authservice.service.AuthService;
@@ -26,7 +27,7 @@ public class AuthServiceImpl implements AuthService {
 	public String register(RegisterRequest request) {
 		
 		if(userRepo.existsByEmail(request.getEmail())) {
-			throw new RuntimeException("Email Already Exists!!!");
+			throw new EmailAlreadyExistsException("Email Already Exists!!!");
 		}
 		
 		User user = User.builder()

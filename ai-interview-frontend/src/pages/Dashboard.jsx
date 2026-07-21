@@ -22,7 +22,7 @@ function Dashboard() {
     try {
 
       const response = await api.get(
-        "/api/interview/dashboard"
+       "/api/interviews/dashboard"
       );
 
       setDashboard(response.data);

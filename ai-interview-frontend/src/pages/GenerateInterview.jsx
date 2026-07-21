@@ -13,22 +13,24 @@ function GenerateInterview() {
   const [answers, setAnswers] = useState({});
   const [results, setResults] = useState({});
 
+  const [expandedFeedback, setExpandedFeedback] = useState({});
+
   const generateInterview = async () => {
 
     try {
 
-      const response = await api.post(
-        "/api/interview/generate",
-        {
-          domain,
-          difficulty
-        }
-      );
+            const response = await api.post(
+          "/api/interviews/generate",
+          {
+            domain,
+            difficulty
+          }
+          );
 
-      setQuestions(response.data.questions);
-      setSessionId(response.data.sessionId);
+          setQuestions(response.data.questions);
+          setSessionId(response.data.sessionId);
 
-    } catch (error) {
+      } catch (error) {
 
       console.error(error);
 
@@ -41,7 +43,7 @@ function GenerateInterview() {
   try {
 
     const response = await api.post(
-      "/api/interview/submit-answer",
+      "/api/interviews/evaluate",
       {
         questionId: questionId,
         answer: answers[questionId]
@@ -176,11 +178,28 @@ function GenerateInterview() {
             </h6>
 
             <p>
-              <strong>
-                Feedback:
-              </strong>
-              {" "}
-              {results[question.questionId].feedback}
+              <strong>Feedback:</strong>{" "}
+
+              {expandedFeedback[question.questionId]
+                ? results[question.questionId].feedback
+                : results[question.questionId].feedback.substring(0, 300)}
+
+              {results[question.questionId].feedback.length > 300 && (
+                <button
+                  className="btn btn-link p-0 ms-2"
+                  onClick={() =>
+                    setExpandedFeedback({
+                      ...expandedFeedback,
+                      [question.questionId]:
+                        !expandedFeedback[question.questionId]
+                    })
+                  }
+                >
+                  {expandedFeedback[question.questionId]
+                    ? "Show Less"
+                    : "Show More"}
+                </button>
+              )}
             </p>
 
           </div>

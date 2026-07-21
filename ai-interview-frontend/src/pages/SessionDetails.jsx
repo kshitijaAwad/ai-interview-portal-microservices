@@ -18,7 +18,7 @@ function SessionDetails() {
         try {
 
             const response = await api.get(
-                `/api/interview/session/${sessionId}`
+                `/api/interviews/${sessionId}`
             );
 
             setSession(response.data);

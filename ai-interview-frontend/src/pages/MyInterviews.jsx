@@ -18,8 +18,10 @@ function MyInterviews() {
         try {
 
             const response = await api.get(
-                "/api/interview/my-sessions"
+                "/api/interviews"
             );
+
+            console.log(response.data);
 
             setSessions(response.data);
 
@@ -77,8 +79,16 @@ function MyInterviews() {
                             <td>{session.difficulty}</td>
 
                             <td>
-                                {new Date(session.createdAt)
-                                    .toLocaleDateString()}
+                                {new Date(
+                                    session.createdAt[0],
+                                    session.createdAt[1] - 1,
+                                    session.createdAt[2],
+                                    session.createdAt[3] || 0,
+                                    session.createdAt[4] || 0,
+                                    session.createdAt[5] || 0
+                                    ).toLocaleDateString()
+                                }
+
                             </td>
 
                             <td>
